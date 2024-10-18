@@ -1,0 +1,33 @@
+databaseChangeLog:
+  - changeSet:
+      id: v.1.0-1-create-card
+      author: andrei_savitski
+      changes:
+        - createTable:
+            tableName: card
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: number
+                  type: bigint
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: amount
+                  type: numeric(38,2)
+              - column:
+                  name: client_id
+                  type: bigint
+        - addForeignKeyConstraint:
+            baseColumnNames: client_id
+            baseTableName: card
+            constraintName: fk-client-card
+            referencedColumnNames: id
+            referencedTableName: client
