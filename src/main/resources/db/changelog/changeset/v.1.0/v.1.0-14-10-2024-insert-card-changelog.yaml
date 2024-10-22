@@ -1,0 +1,50 @@
+databaseChangeLog:
+  - changeSet:
+      id: v.1.0-2-insert-card
+      author: andrei_savitski
+      changes:
+        - insert:
+            tableName: card
+            columns:
+              - column:
+                  name: id
+                  value: 777
+              - column:
+                  name: number
+                  value: 555445435345353543
+              - column:
+                  name: amount
+                  value: 1000
+              - column:
+                  name: client_id
+                  value: 666
+        - insert:
+            tableName: card
+            columns:
+              - column:
+                  name: id
+                  value: 888
+              - column:
+                  name: number
+                  value: 3454354353454343
+              - column:
+                  name: amount
+                  value: 500
+              - column:
+                  name: client_id
+                  value: 666
+        - insert:
+            tableName: card
+            columns:
+              - column:
+                  name: id
+                  value: 999
+              - column:
+                  name: number
+                  value: 3454353534534534
+              - column:
+                  name: amount
+                  value: 1500
+              - column:
+                  name: client_id
+                  value: 666

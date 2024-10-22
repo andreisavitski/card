@@ -6,8 +6,10 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Exchanger;
+
 @Component
 public class ExchangerManager {
+
     private final Map<String, Exchanger<String>> exchangerMap = new ConcurrentHashMap<>();
 
     public String generateCorrelationId() {
@@ -24,7 +26,7 @@ public class ExchangerManager {
         return exchangerMap.get(correlationId);
     }
 
-    public void removeExchanger(String correlationId){
+    public void removeExchanger(String correlationId) {
         exchangerMap.remove(correlationId);
     }
 }

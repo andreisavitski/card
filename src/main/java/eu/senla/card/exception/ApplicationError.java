@@ -16,6 +16,7 @@ public enum ApplicationError implements AppError, Supplier<ApplicationException>
     THE_CARD_EXISTS(BAD_REQUEST, "A card with this number already exists");
 
     private final HttpStatus status;
+
     private final String code;
 
     ApplicationError(HttpStatus status, String code) {

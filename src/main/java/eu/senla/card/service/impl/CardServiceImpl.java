@@ -3,6 +3,7 @@ package eu.senla.card.service.impl;
 import eu.senla.card.dto.CardRequestDto;
 import eu.senla.card.dto.CardResponseDto;
 import eu.senla.card.dto.ClientCardResponse;
+import eu.senla.card.dto.TransferRequestMessage;
 import eu.senla.card.entity.Card;
 import eu.senla.card.entity.Client;
 import eu.senla.card.exception.ApplicationException;
@@ -12,11 +13,12 @@ import eu.senla.card.repository.ClientRepository;
 import eu.senla.card.service.CardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
-import static eu.senla.card.exception.ApplicationError.CLIENT_NOT_FOUND;
-import static eu.senla.card.exception.ApplicationError.THE_CARD_EXISTS;
+import static eu.senla.card.exception.ApplicationError.*;
 
 @Service
 @RequiredArgsConstructor
@@ -46,6 +48,33 @@ public class CardServiceImpl implements CardService {
                 .toList();
     }
 
+    @Override
+    public CardResponseDto getCardById(Long id) {
+        return cardMapper.toDto(cardRepository.findById(id).orElseThrow(
+                () -> new ApplicationException(CARD_NOT_FOUND))
+        );
+    }
+
+    @Transactional
+    @Override
+    public boolean makeTransfer(TransferRequestMessage transferRequestMessage) {
+        Optional<Card> cardFrom = cardRepository.findById(transferRequestMessage.getCardIdFrom());
+        Optional<Card> cardTo = cardRepository.findById(transferRequestMessage.getCardIdTo());
+        if (cardFrom.isPresent()
+            && cardTo.isPresent()
+            && cardFrom.get()
+                       .getAmount()
+                       .compareTo(transferRequestMessage.getAmount()) < 0) {
+            return false;
+        }
+        cardFrom.orElseThrow().setAmount(cardFrom.get().getAmount()
+                .subtract(transferRequestMessage.getAmount()));
+        cardTo.orElseThrow().setAmount(cardTo.get().getAmount()
+                .add(transferRequestMessage.getAmount()));
+        cardRepository.save(cardFrom.get());
+        cardRepository.save(cardTo.get());
+        return true;
+    }
 
     private CardRequestDto checkingUniqueNumber(CardRequestDto cardRequestDto) {
         if (cardRepository.findByNumber(cardRequestDto.getNumber()).isEmpty()) {
