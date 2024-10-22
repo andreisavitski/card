@@ -14,7 +14,8 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 @Slf4j
 public class ApplicationExceptionHandler {
     @ExceptionHandler(ApplicationException.class)
-    private ResponseEntity<ErrorResponseDto> handleApplicationException(ApplicationException applicationException) {
+    private ResponseEntity<ErrorResponseDto> handleApplicationException(
+            ApplicationException applicationException) {
         return ResponseEntity.status(
                 applicationException.getStatus()).body(
                 new ErrorResponseDto(applicationException.getStatus(), applicationException.getMessage())
@@ -29,7 +30,8 @@ public class ApplicationExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    private ResponseEntity<ErrorResponseDto> handleValidationException(MethodArgumentNotValidException validException) {
+    private ResponseEntity<ErrorResponseDto> handleValidationException(
+            MethodArgumentNotValidException validException) {
         return ResponseEntity.status(validException.getStatusCode()).body(
                 new ErrorResponseDto(validException.getStatusCode(), validException.getMessage())
         );
