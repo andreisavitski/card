@@ -2,17 +2,17 @@ package eu.senla.card.constant;
 
 public class AppConstants {
 
-    public static final String RABBITMQ_QUEUE_1 = "${rabbitmq.queue1.json.name}";
+    public static final String RABBITMQ_QUEUE_REQUEST_FOR_GET_CARD = "${rabbitmq.queue1.name}";
 
-    public static final String RABBITMQ_QUEUE_2 = "${rabbitmq.queue2.json.name}";
+    public static final String RABBITMQ_QUEUE_RESPONSE_FOR_GET_CARD = "${rabbitmq.queue2.name}";
 
-    public static final String RABBITMQ_QUEUE_3 = "${rabbitmq.queue3.json.name}";
+    public static final String RABBITMQ_QUEUE_REQUEST_FOR_TRANSFER = "${rabbitmq.queue3.name}";
 
-    public static final String RABBITMQ_QUEUE_4 = "${rabbitmq.queue4.json.name}";
+    public static final String RABBITMQ_QUEUE_RESPONSE_FOR_TRANSFER = "${rabbitmq.queue4.name}";
 
     public static final String RABBITMQ_EXCHANGE = "${rabbitmq.exchange.name}";
 
-    public static final String RABBITMQ_ROUTING2_KEY = "${rabbitmq.routing2.json.key}";
+    public static final String RABBITMQ_ROUTING_KEY_FOR_RESPONSE_GET_CARD = "${rabbitmq.routing2.key}";
 
-    public static final String RABBITMQ_ROUTING4_KEY = "${rabbitmq.routing4.json.key}";
+    public static final String RABBITMQ_ROUTING_KEY_FOR_RESPONSE_TRANSFER = "${rabbitmq.routing4.key}";
 }

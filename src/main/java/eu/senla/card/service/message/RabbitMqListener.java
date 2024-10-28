@@ -23,11 +23,11 @@ public class RabbitMqListener {
     @Value(RABBITMQ_EXCHANGE)
     private String exchange;
 
-    @Value(RABBITMQ_ROUTING2_KEY)
-    private String routing2JsonKey;
+    @Value(RABBITMQ_ROUTING_KEY_FOR_RESPONSE_GET_CARD)
+    private String routingKeyForResponseGetCard;
 
-    @Value(RABBITMQ_ROUTING4_KEY)
-    private String routing4JsonKey;
+    @Value(RABBITMQ_ROUTING_KEY_FOR_RESPONSE_TRANSFER)
+    private String routingKeyForResponseTransfer;
 
     private final CardService cardService;
 
@@ -36,22 +36,30 @@ public class RabbitMqListener {
     private final MessageUtil messageUtil;
 
 
-    @RabbitListener(queues = {RABBITMQ_QUEUE_1})
+    @RabbitListener(queues = {RABBITMQ_QUEUE_REQUEST_FOR_GET_CARD})
     public void acceptRequestToReceiveAllCards(Message message) {
         ClientCardRequest client = messageUtil.convertFromMessage(message.getBody(), ClientCardRequest.class);
         List<ClientCardResponse> cards = cardService.findCardByClientId(client.getId());
-        convertAndSand(cards, routing2JsonKey, message.getMessageProperties().getCorrelationId());
 
-        //вернуть DTO
+//        TransferResponseMessage responseMessage = TransferResponseMessage
+//                .builder()
+//                .cards(cards)
+//                .applicationException(new ApplicationException(HttpStatus.OK, "ok", "200"))
+//                .build();
+//        if (cards.isEmpty()) {
+//            responseMessage.setApplicationException(new ApplicationException(CARD_NOT_FOUND));
+//        }
 
+        convertAndSand(cards, routingKeyForResponseGetCard,
+                message.getMessageProperties().getCorrelationId());
     }
 
-    @RabbitListener(queues = {RABBITMQ_QUEUE_3})
+    @RabbitListener(queues = {RABBITMQ_QUEUE_REQUEST_FOR_TRANSFER})
     public void acceptMoneyTransferRequest(Message message) {
         TransferRequestMessage requestMessage = messageUtil.convertFromMessage(message.getBody(),
                 TransferRequestMessage.class);
         Boolean responseMessage = cardService.makeTransfer(requestMessage);
-        convertAndSand(responseMessage, routing4JsonKey, message.getMessageProperties().getCorrelationId());
+        convertAndSand(responseMessage, routingKeyForResponseTransfer, message.getMessageProperties().getCorrelationId());
     }
 
     private void convertAndSand(Object o, String routingJsonKey, String correlationId) {
