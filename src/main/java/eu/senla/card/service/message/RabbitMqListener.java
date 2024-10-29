@@ -40,16 +40,6 @@ public class RabbitMqListener {
     public void acceptRequestToReceiveAllCards(Message message) {
         ClientCardRequest client = messageUtil.convertFromMessage(message.getBody(), ClientCardRequest.class);
         List<ClientCardResponse> cards = cardService.findCardByClientId(client.getId());
-
-//        TransferResponseMessage responseMessage = TransferResponseMessage
-//                .builder()
-//                .cards(cards)
-//                .applicationException(new ApplicationException(HttpStatus.OK, "ok", "200"))
-//                .build();
-//        if (cards.isEmpty()) {
-//            responseMessage.setApplicationException(new ApplicationException(CARD_NOT_FOUND));
-//        }
-
         convertAndSand(cards, routingKeyForResponseGetCard,
                 message.getMessageProperties().getCorrelationId());
     }
@@ -58,8 +48,8 @@ public class RabbitMqListener {
     public void acceptMoneyTransferRequest(Message message) {
         TransferRequestMessage requestMessage = messageUtil.convertFromMessage(message.getBody(),
                 TransferRequestMessage.class);
-        Boolean responseMessage = cardService.makeTransfer(requestMessage);
-        convertAndSand(responseMessage, routingKeyForResponseTransfer, message.getMessageProperties().getCorrelationId());
+        convertAndSand(cardService.makeTransfer(requestMessage), routingKeyForResponseTransfer,
+                message.getMessageProperties().getCorrelationId());
     }
 
     private void convertAndSand(Object o, String routingJsonKey, String correlationId) {

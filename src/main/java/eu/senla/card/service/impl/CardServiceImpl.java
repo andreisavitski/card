@@ -7,11 +7,15 @@ import eu.senla.card.mapper.CardMapper;
 import eu.senla.card.repository.CardRepository;
 import eu.senla.card.service.CardService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.OK;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +35,7 @@ public class CardServiceImpl implements CardService {
 
     @Transactional
     @Override
-    public boolean makeTransfer(TransferRequestMessage transferRequestMessage) {
+    public HttpStatus makeTransfer(TransferRequestMessage transferRequestMessage) {
         Optional<Card> optionalCardFrom = cardRepository.findById(transferRequestMessage.getCardIdFrom());
         Optional<Card> optionalCardTo = cardRepository.findById(transferRequestMessage.getCardIdTo());
         if (optionalCardFrom.isPresent()
@@ -40,9 +44,9 @@ public class CardServiceImpl implements CardService {
                        .getAmount()
                        .compareTo(transferRequestMessage.getAmount()) >= 0) {
             executeTransfer(optionalCardFrom.get(), optionalCardTo.get(), transferRequestMessage);
-            return true;
+            return OK;
         }
-        return false;
+        return BAD_REQUEST;
     }
 
     private void executeTransfer(Card cardFrom, Card cardTo,
