@@ -21,29 +21,29 @@ import static eu.senla.card.constant.AppConstants.*;
 @Configuration
 public class RabbitMqConfiguration {
 
-    @Value(RABBITMQ_QUEUE_2)
-    private String queue2;
+    @Value(RABBITMQ_QUEUE_RESPONSE_FOR_GET_CARD)
+    private String queueResponseForGetCard;
 
-    @Value(RABBITMQ_QUEUE_4)
-    private String queue4;
+    @Value(RABBITMQ_QUEUE_RESPONSE_FOR_TRANSFER)
+    private String queueResponseForTransfer;
 
     @Value(RABBITMQ_EXCHANGE)
     private String exchange;
 
-    @Value(RABBITMQ_ROUTING2_KEY)
-    private String routingJsonKey2;
+    @Value(RABBITMQ_ROUTING_KEY_FOR_RESPONSE_GET_CARD)
+    private String routingKeyForResponseGetCard;
 
-    @Value(RABBITMQ_ROUTING4_KEY)
-    private String routingJsonKey4;
+    @Value(RABBITMQ_ROUTING_KEY_FOR_RESPONSE_TRANSFER)
+    private String routingKeyForResponseTransfer;
 
     @Bean
-    public Queue queue2() {
-        return new Queue(queue2);
+    public Queue queueResponseForGetCard() {
+        return new Queue(queueResponseForGetCard);
     }
 
     @Bean
-    public Queue queue4() {
-        return new Queue(queue4);
+    public Queue queueResponseForTransfer() {
+        return new Queue(queueResponseForTransfer);
     }
 
     @Bean
@@ -52,19 +52,19 @@ public class RabbitMqConfiguration {
     }
 
     @Bean
-    public Binding binding2() {
+    public Binding bindingForResponseGetCard() {
         return BindingBuilder
-                .bind(queue2())
+                .bind(queueResponseForGetCard())
                 .to(exchange())
-                .with(routingJsonKey2);
+                .with(routingKeyForResponseGetCard);
     }
 
     @Bean
-    public Binding binding4() {
+    public Binding bindingForResponseTransfer() {
         return BindingBuilder
-                .bind(queue4())
+                .bind(queueResponseForTransfer())
                 .to(exchange())
-                .with(routingJsonKey4);
+                .with(routingKeyForResponseTransfer);
     }
 
     @Bean

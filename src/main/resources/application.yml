@@ -2,53 +2,13 @@ server:
   port: 8084
   servlet:
     context-path: /card
-
 spring:
-  liquibase:
-    enabled: true
-
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    username: postgres
-    password: sa
-    url: jdbc:postgresql://localhost:5433/bankdb
-
-  jpa:
-    properties:
-      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
-    format-sql: true
-    hibernate:
-      ddl-auto: validate
-    open-in-view: false
-    show-sql: false
-
   application:
     name: card
-
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: admin
-    password: admin
-
-rabbitmq:
-  exchange:
-    name: amq.direct
-  queue1:
-    json:
-      name: card1
-  queue2:
-    json:
-      name: card2
-  queue3:
-    json:
-      name: card3
-  queue4:
-    json:
-      name: card4
-  routing2:
-    json:
-      key: card2
-  routing4:
-    json:
-      key: card4
+  config:
+    import: 'optional:configserver:'
+  cloud:
+    config:
+      fail-fast: true
+      enabled: true
+    uri: http://admin:admin@localhost:8888
