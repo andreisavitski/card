@@ -27,8 +27,8 @@ public class RabbitMqConfiguration {
     @Value(RABBITMQ_QUEUE_RESPONSE_FOR_TRANSFER)
     private String queueResponseForTransfer;
 
-    @Value(RABBITMQ_EXCHANGE)
-    private String exchange;
+    @Value(RABBITMQ_EXCHANGE_CARD_TRANSFER)
+    private String exchangeCardTransfer;
 
     @Value(RABBITMQ_ROUTING_KEY_FOR_RESPONSE_GET_CARD)
     private String routingKeyForResponseGetCard;
@@ -48,7 +48,7 @@ public class RabbitMqConfiguration {
 
     @Bean
     public DirectExchange exchange() {
-        return new DirectExchange(exchange);
+        return new DirectExchange(exchangeCardTransfer);
     }
 
     @Bean

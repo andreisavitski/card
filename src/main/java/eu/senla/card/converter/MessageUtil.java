@@ -1,18 +1,17 @@
 package eu.senla.card.converter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.SneakyThrows;
-import org.springframework.stereotype.Component;
 
-@Component
-@RequiredArgsConstructor
+@Setter
 public class MessageUtil {
 
-    private final ObjectMapper objectMapper;
+    @Setter
+    private static ObjectMapper objectMapper;
 
     @SneakyThrows
-    public <T> T convertFromMessage(byte[] json, Class<T> clazz) {
+    public static <T> T convertFromMessage(byte[] json, Class<T> clazz) {
         return objectMapper.readValue(json, clazz);
     }
 }
