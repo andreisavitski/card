@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @Builder
 @Jacksonized
-public class ResponseMessage {
+public class ResponseMessageDto {
 
     private final String status;
 

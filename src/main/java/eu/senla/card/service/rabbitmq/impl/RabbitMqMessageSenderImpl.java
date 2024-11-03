@@ -1,6 +1,7 @@
 package eu.senla.card.service.rabbitmq.impl;
 
 import eu.senla.card.service.rabbitmq.RabbitMqMessageSender;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,7 +19,7 @@ public class RabbitMqMessageSenderImpl implements RabbitMqMessageSender {
     private final RabbitTemplate rabbitTemplate;
 
     @Override
-    public void convertAndSand(Object message, String routingKey, String correlationId) {
+    public void convertAndSand(@NotNull Object message, @NotNull String routingKey, @NotNull String correlationId) {
         rabbitTemplate.convertAndSend(
                 exchange,
                 routingKey,

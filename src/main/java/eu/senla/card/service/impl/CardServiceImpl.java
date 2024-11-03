@@ -1,12 +1,13 @@
 package eu.senla.card.service.impl;
 
-import eu.senla.card.dto.ClientCardResponse;
-import eu.senla.card.dto.ResponseMessage;
-import eu.senla.card.dto.TransferRequestMessage;
+import eu.senla.card.dto.ClientCardResponseDto;
+import eu.senla.card.dto.ResponseMessageDto;
+import eu.senla.card.dto.TransferRequestMessageDto;
 import eu.senla.card.entity.Card;
 import eu.senla.card.mapper.CardMapper;
 import eu.senla.card.repository.CardRepository;
 import eu.senla.card.service.CardService;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,8 +27,8 @@ public class CardServiceImpl implements CardService {
     private final CardMapper cardMapper;
 
     @Override
-    public ResponseMessage findCardByClientId(Long clientId) {
-        List<ClientCardResponse> cards = cardRepository.findByClientId(clientId)
+    public ResponseMessageDto findCardByClientId(@NotNull Long clientId) {
+        final List<ClientCardResponseDto> cards = cardRepository.findByClientId(clientId)
                 .stream()
                 .map(cardMapper::toClientCardResponse)
                 .toList();
@@ -37,24 +38,25 @@ public class CardServiceImpl implements CardService {
 
     @Transactional
     @Override
-    public ResponseMessage makeTransfer(TransferRequestMessage transferRequestMessage) {
-        Optional<Card> optionalCardFrom = cardRepository.findById(transferRequestMessage.getCardIdFrom());
-        Optional<Card> optionalCardTo = cardRepository.findById(transferRequestMessage.getCardIdTo());
+    @NotNull
+    public ResponseMessageDto makeTransfer(@NotNull TransferRequestMessageDto transferRequestMessageDto) {
+        final Optional<Card> optionalCardFrom = cardRepository.findById(transferRequestMessageDto.getCardIdFrom());
+        final Optional<Card> optionalCardTo = cardRepository.findById(transferRequestMessageDto.getCardIdTo());
         if (optionalCardFrom.isPresent()
                 && optionalCardTo.isPresent()
                 && optionalCardFrom.get()
                 .getAmount()
-                .compareTo(transferRequestMessage.getAmount()) >= 0) {
-            executeTransfer(optionalCardFrom.get(), optionalCardTo.get(), transferRequestMessage);
+                .compareTo(transferRequestMessageDto.getAmount()) >= 0) {
+            executeTransfer(optionalCardFrom.get(), optionalCardTo.get(), transferRequestMessageDto);
             return ok();
         }
         return badRequest();
     }
 
-    private void executeTransfer(Card cardFrom, Card cardTo,
-                                 TransferRequestMessage transferRequestMessage) {
-        cardFrom.setAmount(cardFrom.getAmount().subtract(transferRequestMessage.getAmount()));
-        cardTo.setAmount(cardTo.getAmount().add(transferRequestMessage.getAmount()));
+    private void executeTransfer(@NotNull Card cardFrom, @NotNull Card cardTo,
+                                 @NotNull TransferRequestMessageDto transferRequestMessageDto) {
+        cardFrom.setAmount(cardFrom.getAmount().subtract(transferRequestMessageDto.getAmount()));
+        cardTo.setAmount(cardTo.getAmount().add(transferRequestMessageDto.getAmount()));
         cardRepository.save(cardFrom);
         cardRepository.save(cardTo);
     }

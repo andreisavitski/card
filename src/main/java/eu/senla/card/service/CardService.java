@@ -1,11 +1,11 @@
 package eu.senla.card.service;
 
-import eu.senla.card.dto.ResponseMessage;
-import eu.senla.card.dto.TransferRequestMessage;
+import eu.senla.card.dto.ResponseMessageDto;
+import eu.senla.card.dto.TransferRequestMessageDto;
 
 public interface CardService {
 
-    ResponseMessage findCardByClientId(Long clientId);
+    ResponseMessageDto findCardByClientId(Long clientId);
 
-    ResponseMessage makeTransfer(TransferRequestMessage transferRequestMessage);
+    ResponseMessageDto makeTransfer(TransferRequestMessageDto transferRequestMessageDto);
 }

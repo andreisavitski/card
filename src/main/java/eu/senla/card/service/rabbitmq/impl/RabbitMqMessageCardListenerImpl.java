@@ -1,11 +1,12 @@
 package eu.senla.card.service.rabbitmq.impl;
 
 import eu.senla.card.converter.MessageUtil;
-import eu.senla.card.dto.ClientCardRequest;
-import eu.senla.card.dto.ResponseMessage;
+import eu.senla.card.dto.ClientCardRequestDto;
+import eu.senla.card.dto.ResponseMessageDto;
 import eu.senla.card.service.CardService;
 import eu.senla.card.service.rabbitmq.RabbitMqMessageCardListener;
 import eu.senla.card.service.rabbitmq.RabbitMqMessageSender;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -28,10 +29,11 @@ public class RabbitMqMessageCardListenerImpl implements RabbitMqMessageCardListe
 
     @Override
     @RabbitListener(queues = {RABBITMQ_QUEUE_REQUEST_FOR_GET_CARD})
-    public void acceptRequestToReceiveAllCards(Message message) {
-        ClientCardRequest client = MessageUtil.convertFromMessage(message.getBody(), ClientCardRequest.class);
-        ResponseMessage responseMessage = cardService.findCardByClientId(client.getId());
-        sender.convertAndSand(responseMessage, routingKeyForResponseGetCard,
+    public void acceptRequestToReceiveAllCards(@NotNull Message message) {
+        final ClientCardRequestDto client =
+                MessageUtil.convertFromMessage(message.getBody(), ClientCardRequestDto.class);
+        final ResponseMessageDto responseMessageDto = cardService.findCardByClientId(client.getId());
+        sender.convertAndSand(responseMessageDto, routingKeyForResponseGetCard,
                 message.getMessageProperties().getCorrelationId());
     }
 }
