@@ -1,11 +1,10 @@
 package eu.senla.card.service.rabbitmq.impl;
 
 import eu.senla.card.converter.MessageUtil;
-import eu.senla.card.dto.ResponseMessageDto;
+import eu.senla.card.dto.ResponseMessageDtoTest;
 import eu.senla.card.dto.TransferRequestMessageDto;
 import eu.senla.card.service.CardService;
 import eu.senla.card.service.rabbitmq.RabbitMqMessageSender;
-import eu.senla.card.service.rabbitmq.RabbitMqMessageTransferListener;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.core.Message;
@@ -18,7 +17,7 @@ import static eu.senla.card.constant.AppConstants.RABBITMQ_ROUTING_KEY_FOR_RESPO
 
 @Service
 @RequiredArgsConstructor
-public class RabbitMqMessageTransferListenerImpl implements RabbitMqMessageTransferListener {
+public class RabbitMqMessageTransferListener {
 
     @Value(RABBITMQ_ROUTING_KEY_FOR_RESPONSE_TRANSFER)
     private String routingKeyForResponseTransfer;
@@ -27,13 +26,12 @@ public class RabbitMqMessageTransferListenerImpl implements RabbitMqMessageTrans
 
     private final RabbitMqMessageSender sender;
 
-    @Override
     @RabbitListener(queues = {RABBITMQ_QUEUE_REQUEST_FOR_TRANSFER})
     public void acceptMoneyTransferRequest(@NotNull Message message) {
-        final TransferRequestMessageDto requestMessage = MessageUtil.convertFromMessage(message.getBody(),
-                TransferRequestMessageDto.class);
-        final ResponseMessageDto responseMessageDto = cardService.makeTransfer(requestMessage);
-        sender.convertAndSand(responseMessageDto, routingKeyForResponseTransfer,
+        final TransferRequestMessageDto requestMessage =
+                MessageUtil.convertFromMessage(message.getBody(), TransferRequestMessageDto.class);
+        final ResponseMessageDtoTest responseMessageDtoTest = cardService.makeTransfer(requestMessage);
+        sender.convertAndSand(responseMessageDtoTest, routingKeyForResponseTransfer,
                 message.getMessageProperties().getCorrelationId());
     }
 }

@@ -1,11 +1,14 @@
 package eu.senla.card.service;
 
-import eu.senla.card.dto.ResponseMessageDto;
+import eu.senla.card.dto.ResponseMessageDtoTest;
 import eu.senla.card.dto.TransferRequestMessageDto;
+import jakarta.validation.constraints.NotNull;
 
 public interface CardService {
 
-    ResponseMessageDto findCardByClientId(Long clientId);
+    @NotNull
+    ResponseMessageDtoTest findCardByClientId(@NotNull Long clientId);
 
-    ResponseMessageDto makeTransfer(TransferRequestMessageDto transferRequestMessageDto);
+    @NotNull
+    ResponseMessageDtoTest makeTransfer(@NotNull TransferRequestMessageDto transferRequestMessageDto);
 }

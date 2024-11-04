@@ -7,19 +7,21 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import static eu.senla.card.constant.AppConstants.RABBITMQ_EXCHANGE_CARD_TRANSFER;
+import static eu.senla.card.constant.AppConstants.RABBITMQ_EXCHANGE_CARD;
 
 @Service
 @RequiredArgsConstructor
 public class RabbitMqMessageSenderImpl implements RabbitMqMessageSender {
 
-    @Value(RABBITMQ_EXCHANGE_CARD_TRANSFER)
+    @Value(RABBITMQ_EXCHANGE_CARD)
     private String exchange;
 
     private final RabbitTemplate rabbitTemplate;
 
     @Override
-    public void convertAndSand(@NotNull Object message, @NotNull String routingKey, @NotNull String correlationId) {
+    public void convertAndSand(@NotNull Object message,
+                               @NotNull String routingKey,
+                               @NotNull String correlationId) {
         rabbitTemplate.convertAndSend(
                 exchange,
                 routingKey,

@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 @Data
 @Builder
 @Jacksonized
-public class ClientCardResponseDto {
+public class CardDto {
 
     private final Long id;
 

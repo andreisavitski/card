@@ -27,7 +27,7 @@ public class RabbitMqConfiguration {
     @Value(RABBITMQ_QUEUE_RESPONSE_FOR_TRANSFER)
     private String queueResponseForTransfer;
 
-    @Value(RABBITMQ_EXCHANGE_CARD_TRANSFER)
+    @Value(RABBITMQ_EXCHANGE_CARD)
     private String exchangeCardTransfer;
 
     @Value(RABBITMQ_ROUTING_KEY_FOR_RESPONSE_GET_CARD)
@@ -91,9 +91,6 @@ public class RabbitMqConfiguration {
                         .build()
         );
         factory.setConnectionFactory(connectionFactory);
-        factory.setErrorHandler(e -> {
-            log.error("Err or listener: ", e);
-        });
         return factory;
     }
 }

@@ -1,7 +1,7 @@
 package eu.senla.card.service.impl;
 
-import eu.senla.card.dto.ClientCardResponseDto;
-import eu.senla.card.dto.ResponseMessageDto;
+import eu.senla.card.dto.CardDto;
+import eu.senla.card.dto.ResponseMessageDtoTest;
 import eu.senla.card.dto.TransferRequestMessageDto;
 import eu.senla.card.entity.Card;
 import eu.senla.card.mapper.CardMapper;
@@ -26,9 +26,10 @@ public class CardServiceImpl implements CardService {
 
     private final CardMapper cardMapper;
 
+    @NotNull
     @Override
-    public ResponseMessageDto findCardByClientId(@NotNull Long clientId) {
-        final List<ClientCardResponseDto> cards = cardRepository.findByClientId(clientId)
+    public ResponseMessageDtoTest findCardByClientId(@NotNull Long clientId) {
+        final List<CardDto> cards = cardRepository.findByClientId(clientId)
                 .stream()
                 .map(cardMapper::toClientCardResponse)
                 .toList();
@@ -37,11 +38,13 @@ public class CardServiceImpl implements CardService {
     }
 
     @Transactional
-    @Override
     @NotNull
-    public ResponseMessageDto makeTransfer(@NotNull TransferRequestMessageDto transferRequestMessageDto) {
-        final Optional<Card> optionalCardFrom = cardRepository.findById(transferRequestMessageDto.getCardIdFrom());
-        final Optional<Card> optionalCardTo = cardRepository.findById(transferRequestMessageDto.getCardIdTo());
+    @Override
+    public ResponseMessageDtoTest makeTransfer(@NotNull TransferRequestMessageDto transferRequestMessageDto) {
+        final Optional<Card> optionalCardFrom =
+                cardRepository.findById(transferRequestMessageDto.getCardIdFrom());
+        final Optional<Card> optionalCardTo =
+                cardRepository.findById(transferRequestMessageDto.getCardIdTo());
         if (optionalCardFrom.isPresent()
                 && optionalCardTo.isPresent()
                 && optionalCardFrom.get()

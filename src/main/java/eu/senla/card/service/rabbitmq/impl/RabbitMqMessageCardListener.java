@@ -2,9 +2,8 @@ package eu.senla.card.service.rabbitmq.impl;
 
 import eu.senla.card.converter.MessageUtil;
 import eu.senla.card.dto.ClientCardRequestDto;
-import eu.senla.card.dto.ResponseMessageDto;
+import eu.senla.card.dto.ResponseMessageDtoTest;
 import eu.senla.card.service.CardService;
-import eu.senla.card.service.rabbitmq.RabbitMqMessageCardListener;
 import eu.senla.card.service.rabbitmq.RabbitMqMessageSender;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +17,7 @@ import static eu.senla.card.constant.AppConstants.RABBITMQ_ROUTING_KEY_FOR_RESPO
 
 @Service
 @RequiredArgsConstructor
-public class RabbitMqMessageCardListenerImpl implements RabbitMqMessageCardListener {
+public class RabbitMqMessageCardListener {
 
     @Value(RABBITMQ_ROUTING_KEY_FOR_RESPONSE_GET_CARD)
     private String routingKeyForResponseGetCard;
@@ -27,13 +26,12 @@ public class RabbitMqMessageCardListenerImpl implements RabbitMqMessageCardListe
 
     private final RabbitMqMessageSender sender;
 
-    @Override
     @RabbitListener(queues = {RABBITMQ_QUEUE_REQUEST_FOR_GET_CARD})
     public void acceptRequestToReceiveAllCards(@NotNull Message message) {
         final ClientCardRequestDto client =
                 MessageUtil.convertFromMessage(message.getBody(), ClientCardRequestDto.class);
-        final ResponseMessageDto responseMessageDto = cardService.findCardByClientId(client.getId());
-        sender.convertAndSand(responseMessageDto, routingKeyForResponseGetCard,
+        final ResponseMessageDtoTest responseMessageDtoTest = cardService.findCardByClientId(client.getId());
+        sender.convertAndSand(responseMessageDtoTest, routingKeyForResponseGetCard,
                 message.getMessageProperties().getCorrelationId());
     }
 }
