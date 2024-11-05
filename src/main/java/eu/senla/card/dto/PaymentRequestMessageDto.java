@@ -9,11 +9,9 @@ import java.math.BigDecimal;
 @Data
 @Builder
 @Jacksonized
-public class TransferRequestMessageDto {
+public class PaymentRequestMessageDto {
 
     private final Long writeOffCardId;
-
-    private final Long topUpCardId;
 
     private final Long clientId;
 

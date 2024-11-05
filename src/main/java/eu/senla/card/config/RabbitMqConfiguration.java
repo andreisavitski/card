@@ -27,14 +27,20 @@ public class RabbitMqConfiguration {
     @Value(RABBITMQ_QUEUE_RESPONSE_FOR_TRANSFER)
     private String queueResponseForTransfer;
 
+    @Value(RABBITMQ_QUEUE_RESPONSE_FOR_PAYMENT)
+    private String queueResponseForPayment;
+
     @Value(RABBITMQ_EXCHANGE_CARD)
-    private String exchangeCardTransfer;
+    private String exchangeCard;
 
     @Value(RABBITMQ_ROUTING_KEY_FOR_RESPONSE_GET_CARD)
     private String routingKeyForResponseGetCard;
 
     @Value(RABBITMQ_ROUTING_KEY_FOR_RESPONSE_TRANSFER)
     private String routingKeyForResponseTransfer;
+
+    @Value(RABBITMQ_ROUTING_KEY_FOR_RESPONSE_PAYMENT)
+    private String routingKeyForResponsePayment;
 
     @Bean
     public Queue queueResponseForGetCard() {
@@ -47,15 +53,20 @@ public class RabbitMqConfiguration {
     }
 
     @Bean
-    public DirectExchange exchange() {
-        return new DirectExchange(exchangeCardTransfer);
+    public Queue queueResponseForPayment() {
+        return new Queue(queueResponseForPayment);
+    }
+
+    @Bean
+    public DirectExchange exchangeCard() {
+        return new DirectExchange(exchangeCard);
     }
 
     @Bean
     public Binding bindingForResponseGetCard() {
         return BindingBuilder
                 .bind(queueResponseForGetCard())
-                .to(exchange())
+                .to(exchangeCard())
                 .with(routingKeyForResponseGetCard);
     }
 
@@ -63,8 +74,16 @@ public class RabbitMqConfiguration {
     public Binding bindingForResponseTransfer() {
         return BindingBuilder
                 .bind(queueResponseForTransfer())
-                .to(exchange())
+                .to(exchangeCard())
                 .with(routingKeyForResponseTransfer);
+    }
+
+    @Bean
+    public Binding bindingForResponsePayment() {
+        return BindingBuilder
+                .bind(queueResponseForPayment())
+                .to(exchangeCard())
+                .with(routingKeyForResponsePayment);
     }
 
     @Bean

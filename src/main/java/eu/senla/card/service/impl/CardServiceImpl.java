@@ -1,6 +1,7 @@
 package eu.senla.card.service.impl;
 
 import eu.senla.card.dto.CardDto;
+import eu.senla.card.dto.PaymentRequestMessageDto;
 import eu.senla.card.dto.ResponseMessageDtoTest;
 import eu.senla.card.dto.TransferRequestMessageDto;
 import eu.senla.card.entity.Card;
@@ -41,26 +42,46 @@ public class CardServiceImpl implements CardService {
     @NotNull
     @Override
     public ResponseMessageDtoTest makeTransfer(@NotNull TransferRequestMessageDto transferRequestMessageDto) {
-        final Optional<Card> optionalCardFrom =
-                cardRepository.findById(transferRequestMessageDto.getCardIdFrom());
-        final Optional<Card> optionalCardTo =
-                cardRepository.findById(transferRequestMessageDto.getCardIdTo());
-        if (optionalCardFrom.isPresent()
-                && optionalCardTo.isPresent()
-                && optionalCardFrom.get()
+        final Optional<Card> optionalWriteOffCard =
+                cardRepository.findById(transferRequestMessageDto.getWriteOffCardId());
+        final Optional<Card> optionalTopUpCard =
+                cardRepository.findById(transferRequestMessageDto.getTopUpCardId());
+        if (optionalWriteOffCard.isPresent()
+                && optionalTopUpCard.isPresent()
+                && optionalWriteOffCard.get()
                 .getAmount()
                 .compareTo(transferRequestMessageDto.getAmount()) >= 0) {
-            executeTransfer(optionalCardFrom.get(), optionalCardTo.get(), transferRequestMessageDto);
+            executeTransfer(optionalWriteOffCard.get(), optionalTopUpCard.get(), transferRequestMessageDto);
             return ok();
         }
         return badRequest();
     }
 
-    private void executeTransfer(@NotNull Card cardFrom, @NotNull Card cardTo,
+    @NotNull
+    @Override
+    public ResponseMessageDtoTest makePayment(@NotNull PaymentRequestMessageDto paymentRequestMessageDto) {
+        final Optional<Card> optionalWriteOffCard =
+                cardRepository.findById(paymentRequestMessageDto.getWriteOffCardId());
+        if (optionalWriteOffCard.isPresent() && optionalWriteOffCard.get()
+                .getAmount()
+                .compareTo(paymentRequestMessageDto.getAmount()) >= 0) {
+            executePayment(optionalWriteOffCard.get(), paymentRequestMessageDto);
+            return ok();
+        }
+        return badRequest();
+    }
+
+    private void executePayment(@NotNull Card writeOffCard,
+                                @NotNull PaymentRequestMessageDto paymentRequestMessageDto) {
+        writeOffCard.setAmount(writeOffCard.getAmount().subtract(paymentRequestMessageDto.getAmount()));
+        cardRepository.save(writeOffCard);
+    }
+
+    private void executeTransfer(@NotNull Card writeOffCard, @NotNull Card topUpCard,
                                  @NotNull TransferRequestMessageDto transferRequestMessageDto) {
-        cardFrom.setAmount(cardFrom.getAmount().subtract(transferRequestMessageDto.getAmount()));
-        cardTo.setAmount(cardTo.getAmount().add(transferRequestMessageDto.getAmount()));
-        cardRepository.save(cardFrom);
-        cardRepository.save(cardTo);
+        writeOffCard.setAmount(writeOffCard.getAmount().subtract(transferRequestMessageDto.getAmount()));
+        topUpCard.setAmount(topUpCard.getAmount().add(transferRequestMessageDto.getAmount()));
+        cardRepository.save(writeOffCard);
+        cardRepository.save(topUpCard);
     }
 }
