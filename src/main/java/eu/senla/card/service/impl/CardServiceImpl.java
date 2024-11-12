@@ -1,21 +1,23 @@
 package eu.senla.card.service.impl;
 
-import eu.senla.card.dto.ClientCardResponse;
-import eu.senla.card.dto.TransferRequestMessage;
+import eu.senla.card.dto.CardDto;
+import eu.senla.card.dto.PaymentRequestMessageDto;
+import eu.senla.card.dto.ResponseMessageDtoTest;
+import eu.senla.card.dto.TransferRequestMessageDto;
 import eu.senla.card.entity.Card;
 import eu.senla.card.mapper.CardMapper;
 import eu.senla.card.repository.CardRepository;
 import eu.senla.card.service.CardService;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.OK;
+import static eu.senla.card.converter.ResponseMessageUtil.badRequest;
+import static eu.senla.card.converter.ResponseMessageUtil.ok;
 
 @Service
 @RequiredArgsConstructor
@@ -25,35 +27,61 @@ public class CardServiceImpl implements CardService {
 
     private final CardMapper cardMapper;
 
+    @NotNull
     @Override
-    public List<ClientCardResponse> findCardByClientId(Long clientId) {
-        return cardRepository.findByClientId(clientId)
+    public ResponseMessageDtoTest findCardByClientId(@NotNull Long clientId) {
+        final List<CardDto> cards = cardRepository.findByClientId(clientId)
                 .stream()
                 .map(cardMapper::toClientCardResponse)
                 .toList();
+        return ok(cards);
+
     }
 
     @Transactional
+    @NotNull
     @Override
-    public HttpStatus makeTransfer(TransferRequestMessage transferRequestMessage) {
-        Optional<Card> optionalCardFrom = cardRepository.findById(transferRequestMessage.getCardIdFrom());
-        Optional<Card> optionalCardTo = cardRepository.findById(transferRequestMessage.getCardIdTo());
-        if (optionalCardFrom.isPresent()
-            && optionalCardTo.isPresent()
-            && optionalCardFrom.get()
-                       .getAmount()
-                       .compareTo(transferRequestMessage.getAmount()) >= 0) {
-            executeTransfer(optionalCardFrom.get(), optionalCardTo.get(), transferRequestMessage);
-            return OK;
+    public ResponseMessageDtoTest makeTransfer(@NotNull TransferRequestMessageDto transferRequestMessageDto) {
+        final Optional<Card> optionalWriteOffCard =
+                cardRepository.findById(transferRequestMessageDto.getWriteOffCardId());
+        final Optional<Card> optionalTopUpCard =
+                cardRepository.findById(transferRequestMessageDto.getTopUpCardId());
+        if (optionalWriteOffCard.isPresent()
+                && optionalTopUpCard.isPresent()
+                && optionalWriteOffCard.get()
+                .getAmount()
+                .compareTo(transferRequestMessageDto.getAmount()) >= 0) {
+            executeTransfer(optionalWriteOffCard.get(), optionalTopUpCard.get(), transferRequestMessageDto);
+            return ok();
         }
-        return BAD_REQUEST;
+        return badRequest();
     }
 
-    private void executeTransfer(Card cardFrom, Card cardTo,
-                                 TransferRequestMessage transferRequestMessage) {
-        cardFrom.setAmount(cardFrom.getAmount().subtract(transferRequestMessage.getAmount()));
-        cardTo.setAmount(cardTo.getAmount().add(transferRequestMessage.getAmount()));
-        cardRepository.save(cardFrom);
-        cardRepository.save(cardTo);
+    @NotNull
+    @Override
+    public ResponseMessageDtoTest makePayment(@NotNull PaymentRequestMessageDto paymentRequestMessageDto) {
+        final Optional<Card> optionalWriteOffCard =
+                cardRepository.findById(paymentRequestMessageDto.getWriteOffCardId());
+        if (optionalWriteOffCard.isPresent() && optionalWriteOffCard.get()
+                .getAmount()
+                .compareTo(paymentRequestMessageDto.getAmount()) >= 0) {
+            executePayment(optionalWriteOffCard.get(), paymentRequestMessageDto);
+            return ok();
+        }
+        return badRequest();
+    }
+
+    private void executePayment(@NotNull Card writeOffCard,
+                                @NotNull PaymentRequestMessageDto paymentRequestMessageDto) {
+        writeOffCard.setAmount(writeOffCard.getAmount().subtract(paymentRequestMessageDto.getAmount()));
+        cardRepository.save(writeOffCard);
+    }
+
+    private void executeTransfer(@NotNull Card writeOffCard, @NotNull Card topUpCard,
+                                 @NotNull TransferRequestMessageDto transferRequestMessageDto) {
+        writeOffCard.setAmount(writeOffCard.getAmount().subtract(transferRequestMessageDto.getAmount()));
+        topUpCard.setAmount(topUpCard.getAmount().add(transferRequestMessageDto.getAmount()));
+        cardRepository.save(writeOffCard);
+        cardRepository.save(topUpCard);
     }
 }

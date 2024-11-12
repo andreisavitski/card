@@ -9,13 +9,11 @@ import java.math.BigDecimal;
 @Data
 @Builder
 @Jacksonized
-public class ClientCardResponse {
+public class PaymentRequestMessageDto {
 
-    private Long id;
+    private final Long writeOffCardId;
 
-    private Long number;
+    private final Long clientId;
 
-    private BigDecimal amount;
-
-    private Long clientId;
+    private final BigDecimal amount;
 }

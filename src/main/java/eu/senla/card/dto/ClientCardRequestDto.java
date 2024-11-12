@@ -7,7 +7,7 @@ import lombok.extern.jackson.Jacksonized;
 @Data
 @Builder
 @Jacksonized
-public class ClientCardRequest {
+public class ClientCardRequestDto {
 
-    private Long id;
+    private final Long id;
 }
