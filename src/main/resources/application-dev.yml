@@ -1,0 +1,64 @@
+server:
+  port: 8084
+  servlet:
+    context-path: /card
+spring:
+  application:
+    name: card
+
+  cloud:
+    config:
+      enabled: false
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: sa
+    url: jdbc:postgresql://localhost:5433/bankdb
+
+  jpa:
+    format-sql: true
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+
+  liquibase:
+    enabled: true
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+    password: admin
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+rabbitmq:
+  exchange_card:
+    name: amq.direct
+  queue_request_for_get_card:
+    name: request_get_card
+  queue_response_for_get_card:
+    name: response_get_card
+  queue_request_for_transfer:
+    name: request_transfer
+  queue_response_for_transfer:
+    name: response_transfer
+  queue_request_for_payment:
+    name: request_payment
+  queue_response_for_payment:
+    name: response_payment
+  routing_for_response_get_card:
+    key: response_get_card
+  routing_for_response_transfer:
+    key: response_transfer
+  routing_for_response_payment:
+    key: response_payment

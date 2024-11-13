@@ -44,14 +44,14 @@ public class CardServiceImpl implements CardService {
     public ResponseMessageDtoTest makeTransfer(@NotNull TransferRequestMessageDto transferRequestMessageDto) {
         final Optional<Card> optionalWriteOffCard =
                 cardRepository.findById(transferRequestMessageDto.getWriteOffCardId());
-        final Optional<Card> optionalTopUpCard =
+        final Optional<Card> optionalTargetCard =
                 cardRepository.findById(transferRequestMessageDto.getTopUpCardId());
         if (optionalWriteOffCard.isPresent()
-                && optionalTopUpCard.isPresent()
+                && optionalTargetCard.isPresent()
                 && optionalWriteOffCard.get()
                 .getAmount()
                 .compareTo(transferRequestMessageDto.getAmount()) >= 0) {
-            executeTransfer(optionalWriteOffCard.get(), optionalTopUpCard.get(), transferRequestMessageDto);
+            executeTransfer(optionalWriteOffCard.get(), optionalTargetCard.get(), transferRequestMessageDto);
             return ok();
         }
         return badRequest();
@@ -77,11 +77,11 @@ public class CardServiceImpl implements CardService {
         cardRepository.save(writeOffCard);
     }
 
-    private void executeTransfer(@NotNull Card writeOffCard, @NotNull Card topUpCard,
+    private void executeTransfer(@NotNull Card writeOffCard, @NotNull Card targetCard,
                                  @NotNull TransferRequestMessageDto transferRequestMessageDto) {
         writeOffCard.setAmount(writeOffCard.getAmount().subtract(transferRequestMessageDto.getAmount()));
-        topUpCard.setAmount(topUpCard.getAmount().add(transferRequestMessageDto.getAmount()));
+        targetCard.setAmount(targetCard.getAmount().add(transferRequestMessageDto.getAmount()));
         cardRepository.save(writeOffCard);
-        cardRepository.save(topUpCard);
+        cardRepository.save(targetCard);
     }
 }

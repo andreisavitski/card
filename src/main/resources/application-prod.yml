@@ -1,0 +1,15 @@
+server:
+  port: 8084
+  servlet:
+    context-path: /card
+spring:
+  application:
+    name: card
+
+  config:
+    import: 'optional:configserver:'
+  cloud:
+    config:
+      fail-fast: true
+      enabled: true
+      uri: http://localhost:8888
