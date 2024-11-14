@@ -22,6 +22,7 @@
         <mapstruct.version>1.5.5.Final</mapstruct.version>
         <lombokmapstructbinding.version>0.2.0</lombokmapstructbinding.version>
         <spring-cloud.version>2023.0.3</spring-cloud.version>
+        <logstash-logback-encoder.version>7.2</logstash-logback-encoder.version>
     </properties>
     <dependencies>
         <dependency>
@@ -47,6 +48,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
+            <version>${logstash-logback-encoder.version}</version>
         </dependency>
         <dependency>
             <groupId>org.liquibase</groupId>
@@ -100,6 +106,11 @@
                 <version>${spring-cloud.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>net.logstash.logback</groupId>
+                <artifactId>logstash-logback-encoder</artifactId>
+                <version>${logstash-logback-encoder.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
