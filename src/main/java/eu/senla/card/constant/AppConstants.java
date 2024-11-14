@@ -31,4 +31,6 @@ public class AppConstants {
 
     public static final String RABBITMQ_EXCHANGE_CARD =
             "${rabbitmq.exchange_card.name}";
+
+    public static final String REQUEST_ID = "requestId";
 }
