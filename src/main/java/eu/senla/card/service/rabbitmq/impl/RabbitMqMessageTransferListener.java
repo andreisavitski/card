@@ -1,7 +1,7 @@
 package eu.senla.card.service.rabbitmq.impl;
 
 import eu.senla.card.converter.MessageUtil;
-import eu.senla.card.dto.ResponseMessageDtoTest;
+import eu.senla.card.dto.ResponseMessageDto;
 import eu.senla.card.dto.TransferRequestMessageDto;
 import eu.senla.card.service.CardService;
 import eu.senla.card.service.rabbitmq.RabbitMqMessageSender;
@@ -30,8 +30,8 @@ public class RabbitMqMessageTransferListener {
     public void acceptMoneyTransferRequest(@NotNull Message message) {
         final TransferRequestMessageDto requestMessage =
                 MessageUtil.convertFromMessage(message.getBody(), TransferRequestMessageDto.class);
-        final ResponseMessageDtoTest responseMessageDtoTest = cardService.makeTransfer(requestMessage);
-        sender.convertAndSand(responseMessageDtoTest, routingKeyForResponseTransfer,
+        final ResponseMessageDto responseMessageDto = cardService.makeTransfer(requestMessage);
+        sender.convertAndSand(responseMessageDto, routingKeyForResponseTransfer,
                 message.getMessageProperties().getCorrelationId());
     }
 }

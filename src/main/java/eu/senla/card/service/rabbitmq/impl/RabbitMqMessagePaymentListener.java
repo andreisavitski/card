@@ -2,7 +2,7 @@ package eu.senla.card.service.rabbitmq.impl;
 
 import eu.senla.card.converter.MessageUtil;
 import eu.senla.card.dto.PaymentRequestMessageDto;
-import eu.senla.card.dto.ResponseMessageDtoTest;
+import eu.senla.card.dto.ResponseMessageDto;
 import eu.senla.card.service.CardService;
 import eu.senla.card.service.rabbitmq.RabbitMqMessageSender;
 import jakarta.validation.constraints.NotNull;
@@ -30,9 +30,9 @@ public class RabbitMqMessagePaymentListener {
     public void acceptMoneyTransferRequest(@NotNull Message message) {
         final PaymentRequestMessageDto paymentRequestMessageDto =
                 MessageUtil.convertFromMessage(message.getBody(), PaymentRequestMessageDto.class);
-        final ResponseMessageDtoTest responseMessageDtoTest =
+        final ResponseMessageDto responseMessageDto =
                 cardService.makePayment(paymentRequestMessageDto);
-        sender.convertAndSand(responseMessageDtoTest, routingKeyForResponsePayment,
+        sender.convertAndSand(responseMessageDto, routingKeyForResponsePayment,
                 message.getMessageProperties().getCorrelationId());
     }
 }

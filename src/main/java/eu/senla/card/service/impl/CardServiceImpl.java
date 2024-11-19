@@ -2,7 +2,7 @@ package eu.senla.card.service.impl;
 
 import eu.senla.card.dto.CardDto;
 import eu.senla.card.dto.PaymentRequestMessageDto;
-import eu.senla.card.dto.ResponseMessageDtoTest;
+import eu.senla.card.dto.ResponseMessageDto;
 import eu.senla.card.dto.TransferRequestMessageDto;
 import eu.senla.card.entity.Card;
 import eu.senla.card.mapper.CardMapper;
@@ -29,7 +29,7 @@ public class CardServiceImpl implements CardService {
 
     @NotNull
     @Override
-    public ResponseMessageDtoTest findCardByClientId(@NotNull Long clientId) {
+    public ResponseMessageDto findCardByClientId(@NotNull Long clientId) {
         final List<CardDto> cards = cardRepository.findByClientId(clientId)
                 .stream()
                 .map(cardMapper::toClientCardResponse)
@@ -41,7 +41,7 @@ public class CardServiceImpl implements CardService {
     @Transactional
     @NotNull
     @Override
-    public ResponseMessageDtoTest makeTransfer(@NotNull TransferRequestMessageDto transferRequestMessageDto) {
+    public ResponseMessageDto makeTransfer(@NotNull TransferRequestMessageDto transferRequestMessageDto) {
         final Optional<Card> optionalWriteOffCard =
                 cardRepository.findById(transferRequestMessageDto.getWriteOffCardId());
         final Optional<Card> optionalTargetCard =
@@ -59,7 +59,7 @@ public class CardServiceImpl implements CardService {
 
     @NotNull
     @Override
-    public ResponseMessageDtoTest makePayment(@NotNull PaymentRequestMessageDto paymentRequestMessageDto) {
+    public ResponseMessageDto makePayment(@NotNull PaymentRequestMessageDto paymentRequestMessageDto) {
         final Optional<Card> optionalWriteOffCard =
                 cardRepository.findById(paymentRequestMessageDto.getWriteOffCardId());
         if (optionalWriteOffCard.isPresent() && optionalWriteOffCard.get()
