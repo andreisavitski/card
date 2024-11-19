@@ -2,7 +2,7 @@ package eu.senla.card.service.rabbitmq.impl;
 
 import eu.senla.card.converter.MessageUtil;
 import eu.senla.card.dto.ClientCardRequestDto;
-import eu.senla.card.dto.ResponseMessageDtoTest;
+import eu.senla.card.dto.ResponseMessageDto;
 import eu.senla.card.service.CardService;
 import eu.senla.card.service.rabbitmq.RabbitMqMessageSender;
 import jakarta.validation.constraints.NotNull;
@@ -30,8 +30,8 @@ public class RabbitMqMessageCardListener {
     public void acceptRequestToReceiveAllCards(@NotNull Message message) {
         final ClientCardRequestDto client =
                 MessageUtil.convertFromMessage(message.getBody(), ClientCardRequestDto.class);
-        final ResponseMessageDtoTest responseMessageDtoTest = cardService.findCardByClientId(client.getId());
-        sender.convertAndSand(responseMessageDtoTest, routingKeyForResponseGetCard,
+        final ResponseMessageDto responseMessageDto = cardService.findCardByClientId(client.getId());
+        sender.convertAndSand(responseMessageDto, routingKeyForResponseGetCard,
                 message.getMessageProperties().getCorrelationId());
     }
 }
