@@ -4,8 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.constraints.NotNull;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import lombok.experimental.UtilityClass;
 
 @Setter
+@UtilityClass
 public class MessageUtil {
 
     @Setter

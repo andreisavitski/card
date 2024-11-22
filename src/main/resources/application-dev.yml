@@ -1,10 +1,4 @@
-server:
-  port: 8084
-  servlet:
-    context-path: /card
 spring:
-  application:
-    name: card
 
   cloud:
     config:

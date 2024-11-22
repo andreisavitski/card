@@ -2,12 +2,14 @@ package eu.senla.card.converter;
 
 import eu.senla.card.dto.ResponseMessageDto;
 import jakarta.validation.constraints.NotNull;
+import lombok.experimental.UtilityClass;
 
 import java.util.ArrayList;
 
 import static eu.senla.card.constant.AppStatusConstant.BAD_REQUEST;
 import static eu.senla.card.constant.AppStatusConstant.OK;
 
+@UtilityClass
 public class ResponseMessageUtil {
 
     @NotNull

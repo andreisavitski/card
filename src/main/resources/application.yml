@@ -1,3 +1,10 @@
+server:
+  port: 8084
+  servlet:
+    context-path: /card
+
 spring:
   profiles:
     active: dev
+  application:
+    name: card

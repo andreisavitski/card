@@ -1,5 +1,8 @@
 package eu.senla.card.constant;
 
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
 public class AppConstants {
 
     public static final String RABBITMQ_QUEUE_REQUEST_FOR_GET_CARD =
