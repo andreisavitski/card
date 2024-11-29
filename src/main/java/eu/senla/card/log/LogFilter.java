@@ -19,11 +19,11 @@ import static eu.senla.card.constant.AppConstants.REQUEST_ID;
 @Component
 public class LogFilter extends OncePerRequestFilter {
 
-
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
-                                    @NonNull FilterChain filterChain) throws ServletException, IOException {
+                                    @NonNull FilterChain filterChain)
+            throws ServletException, IOException {
         String requestId = request.getHeader(REQUEST_ID);
         if (requestId == null) {
             requestId = UUID.randomUUID().toString();

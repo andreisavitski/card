@@ -1,4 +1,4 @@
-package eu.senla.card.converter;
+package eu.senla.card.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.constraints.NotNull;

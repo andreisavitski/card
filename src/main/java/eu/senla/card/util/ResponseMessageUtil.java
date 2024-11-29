@@ -1,4 +1,4 @@
-package eu.senla.card.converter;
+package eu.senla.card.util;
 
 import eu.senla.card.dto.ResponseMessageDto;
 import jakarta.validation.constraints.NotNull;

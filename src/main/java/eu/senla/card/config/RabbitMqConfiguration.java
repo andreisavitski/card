@@ -15,7 +15,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import static eu.senla.card.constant.AppConstants.*;
+import static eu.senla.card.constant.AppConstants.MAXIMUM_ATTEMPTS_FOR_SIMPLE_RETRY_POLICY;
+import static eu.senla.card.constant.AppConstants.RABBITMQ_EXCHANGE_CARD;
+import static eu.senla.card.constant.AppConstants.RABBITMQ_QUEUE_RESPONSE_FOR_GET_CARD;
+import static eu.senla.card.constant.AppConstants.RABBITMQ_QUEUE_RESPONSE_FOR_PAYMENT;
+import static eu.senla.card.constant.AppConstants.RABBITMQ_QUEUE_RESPONSE_FOR_TRANSFER;
+import static eu.senla.card.constant.AppConstants.RABBITMQ_ROUTING_KEY_FOR_RESPONSE_GET_CARD;
+import static eu.senla.card.constant.AppConstants.RABBITMQ_ROUTING_KEY_FOR_RESPONSE_PAYMENT;
+import static eu.senla.card.constant.AppConstants.RABBITMQ_ROUTING_KEY_FOR_RESPONSE_TRANSFER;
 
 @Slf4j
 @Configuration
@@ -64,24 +71,21 @@ public class RabbitMqConfiguration {
 
     @Bean
     public Binding bindingForResponseGetCard() {
-        return BindingBuilder
-                .bind(queueResponseForGetCard())
+        return BindingBuilder.bind(queueResponseForGetCard())
                 .to(exchangeCard())
                 .with(routingKeyForResponseGetCard);
     }
 
     @Bean
     public Binding bindingForResponseTransfer() {
-        return BindingBuilder
-                .bind(queueResponseForTransfer())
+        return BindingBuilder.bind(queueResponseForTransfer())
                 .to(exchangeCard())
                 .with(routingKeyForResponseTransfer);
     }
 
     @Bean
     public Binding bindingForResponsePayment() {
-        return BindingBuilder
-                .bind(queueResponseForPayment())
+        return BindingBuilder.bind(queueResponseForPayment())
                 .to(exchangeCard())
                 .with(routingKeyForResponsePayment);
     }
@@ -102,13 +106,10 @@ public class RabbitMqConfiguration {
     public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory(
             ConnectionFactory connectionFactory) {
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
-        factory.setAdviceChain(
-                RetryInterceptorBuilder
-                        .stateless()
-                        .maxAttempts(5)
-                        .recoverer(new RejectAndDontRequeueRecoverer())
-                        .build()
-        );
+        factory.setAdviceChain(RetryInterceptorBuilder.stateless()
+                .maxAttempts(MAXIMUM_ATTEMPTS_FOR_SIMPLE_RETRY_POLICY)
+                .recoverer(new RejectAndDontRequeueRecoverer())
+                .build());
         factory.setConnectionFactory(connectionFactory);
         return factory;
     }
