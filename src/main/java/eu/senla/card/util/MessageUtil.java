@@ -1,11 +1,13 @@
-package eu.senla.card.converter;
+package eu.senla.card.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.constraints.NotNull;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import lombok.experimental.UtilityClass;
 
 @Setter
+@UtilityClass
 public class MessageUtil {
 
     @Setter

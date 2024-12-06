@@ -6,6 +6,7 @@ import lombok.extern.jackson.Jacksonized;
 
 import java.math.BigDecimal;
 
+
 @Data
 @Builder
 @Jacksonized

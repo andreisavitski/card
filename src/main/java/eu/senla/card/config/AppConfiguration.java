@@ -1,12 +1,12 @@
 package eu.senla.card.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import eu.senla.card.converter.MessageUtil;
+import eu.senla.card.util.MessageUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class AppConfiguration {
+public final class AppConfiguration {
 
     @Bean
     public ObjectMapper objectMapper() {

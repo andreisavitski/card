@@ -1,10 +1,10 @@
 package eu.senla.card.service.rabbitmq.impl;
 
-import eu.senla.card.converter.MessageUtil;
 import eu.senla.card.dto.ClientCardRequestDto;
 import eu.senla.card.dto.ResponseMessageDto;
 import eu.senla.card.service.CardService;
 import eu.senla.card.service.rabbitmq.RabbitMqMessageSender;
+import eu.senla.card.util.MessageUtil;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.core.Message;
@@ -30,7 +30,8 @@ public class RabbitMqMessageCardListener {
     public void acceptRequestToReceiveAllCards(@NotNull Message message) {
         final ClientCardRequestDto client =
                 MessageUtil.convertFromMessage(message.getBody(), ClientCardRequestDto.class);
-        final ResponseMessageDto responseMessageDto = cardService.findCardByClientId(client.getId());
+        final ResponseMessageDto responseMessageDto =
+                cardService.findCardByClientId(client.getId());
         sender.convertAndSand(responseMessageDto, routingKeyForResponseGetCard,
                 message.getMessageProperties().getCorrelationId());
     }

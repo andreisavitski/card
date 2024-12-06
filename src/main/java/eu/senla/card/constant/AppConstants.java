@@ -1,5 +1,8 @@
 package eu.senla.card.constant;
 
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
 public class AppConstants {
 
     public static final String RABBITMQ_QUEUE_REQUEST_FOR_GET_CARD =
@@ -29,8 +32,9 @@ public class AppConstants {
     public static final String RABBITMQ_ROUTING_KEY_FOR_RESPONSE_PAYMENT =
             "${rabbitmq.routing_for_response_payment.key}";
 
-    public static final String RABBITMQ_EXCHANGE_CARD =
-            "${rabbitmq.exchange_card.name}";
+    public static final String RABBITMQ_EXCHANGE_CARD = "${rabbitmq.exchange_card.name}";
 
     public static final String REQUEST_ID = "requestId";
+
+    public static final int MAXIMUM_ATTEMPTS_FOR_SIMPLE_RETRY_POLICY = 5;
 }

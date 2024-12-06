@@ -1,10 +1,10 @@
 package eu.senla.card.service.rabbitmq.impl;
 
-import eu.senla.card.converter.MessageUtil;
 import eu.senla.card.dto.PaymentRequestMessageDto;
 import eu.senla.card.dto.ResponseMessageDto;
 import eu.senla.card.service.CardService;
 import eu.senla.card.service.rabbitmq.RabbitMqMessageSender;
+import eu.senla.card.util.MessageUtil;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.core.Message;
