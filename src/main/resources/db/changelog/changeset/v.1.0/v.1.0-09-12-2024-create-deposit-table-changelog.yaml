@@ -1,0 +1,56 @@
+databaseChangeLog:
+  - changeSet:
+      id: v.1.0-5-create-deposit
+      author: andrei_savitski
+      changes:
+        - createTable:
+            tableName: deposit
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: deposit_type_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: deposit_opening_date
+                  type: timestamp without time zone(6)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: deposit_closing_date
+                  type: timestamp without time zone(6)
+              - column:
+                  name: card_id
+                  type: bigint
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: client_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseColumnNames: deposit_type_id
+            baseTableName: deposit
+            constraintName: fk-deposit-type-deposit
+            referencedColumnNames: id
+            referencedTableName: deposit_type
+        - addForeignKeyConstraint:
+            baseColumnNames: client_id
+            baseTableName: deposit
+            constraintName: fk-client-deposit
+            referencedColumnNames: id
+            referencedTableName: client
+        - addForeignKeyConstraint:
+            baseColumnNames: card_id
+            baseTableName: deposit
+            constraintName: fk-card-deposit
+            referencedColumnNames: id
+            referencedTableName: card

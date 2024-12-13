@@ -1,0 +1,40 @@
+databaseChangeLog:
+  - changeSet:
+      id: v.1.0-3-create-deposit-type
+      author: andrei_savitski
+      changes:
+        - createTable:
+            tableName: deposit_type
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: percent
+                  type: numeric(38,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: min_amount
+                  type: numeric(38,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: max_amount
+                  type: numeric(38,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: period_in_months
+                  type: bigint
+                  constraints:
+                    nullable: false

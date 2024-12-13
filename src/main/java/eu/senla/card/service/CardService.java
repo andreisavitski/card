@@ -15,4 +15,7 @@ public interface CardService {
 
     @NotNull
     ResponseMessageDto makePayment(@NotNull PaymentRequestMessageDto paymentRequestMessageDto);
+
+    @NotNull
+    ResponseMessageDto addCard(@NotNull Long clientId);
 }

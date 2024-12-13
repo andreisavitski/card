@@ -13,7 +13,7 @@ public class TransferRequestMessageDto {
 
     private final Long writeOffCardId;
 
-    private final Long topUpCardId;
+    private final Long targetCardId;
 
     private final Long clientId;
 
