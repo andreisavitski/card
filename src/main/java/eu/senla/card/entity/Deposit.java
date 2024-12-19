@@ -11,7 +11,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -20,7 +19,6 @@ import static jakarta.persistence.CascadeType.MERGE;
 
 @Getter
 @Setter
-@ToString
 @Builder
 @Entity
 @Table(name = "deposit")
@@ -29,26 +27,23 @@ import static jakarta.persistence.CascadeType.MERGE;
 public class Deposit {
 
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private UUID id;
 
-    @ToString.Exclude
     @ManyToOne
-    @JoinColumn(name = "deposit_type_id")
+    @JoinColumn(name = "deposit_type_id", nullable = false)
     private DepositType depositType;
 
-    @Column(name = "deposit_opening_date")
+    @Column(name = "deposit_opening_date", nullable = false)
     private LocalDateTime depositOpeningDate;
 
     @Column(name = "deposit_closing_date")
     private LocalDateTime depositClosingDate;
 
-    @ToString.Exclude
     @ManyToOne(cascade = MERGE)
-    @JoinColumn(name = "card_id")
+    @JoinColumn(name = "card_id", unique = true, nullable = false)
     private Card card;
 
-    @ToString.Exclude
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;

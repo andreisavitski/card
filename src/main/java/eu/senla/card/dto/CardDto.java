@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 
 @Data
@@ -12,11 +13,11 @@ import java.math.BigDecimal;
 @Jacksonized
 public class CardDto {
 
-    private final Long id;
+    private final UUID id;
 
     private final Long number;
 
     private final BigDecimal amount;
 
-    private final Long clientId;
+    private final UUID clientId;
 }

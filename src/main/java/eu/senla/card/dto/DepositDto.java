@@ -20,7 +20,7 @@ public class DepositDto {
 
     private final LocalDateTime depositClosingDate;
 
-    private final Long cardId;
+    private final UUID cardId;
 
-    private final Long clientId;
+    private final UUID clientId;
 }

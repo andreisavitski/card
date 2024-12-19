@@ -10,7 +10,7 @@ public class AppConfiguration {
 
     @Bean
     public ObjectMapper objectMapper() {
-        ObjectMapper objectMapper = new ObjectMapper();
+        final ObjectMapper objectMapper = new ObjectMapper();
         MessageUtil.setObjectMapper(objectMapper);
         return objectMapper;
     }

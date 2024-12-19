@@ -8,13 +8,17 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface CardRepository extends JpaRepository<Card, Long> {
 
     @NotNull
     @Query("select c from Card c where c.client.id = :clientId")
-    List<Card> findByClientId(@NotNull @Param("clientId") Long clientId);
+    List<Card> findByClientId(@NotNull @Param("clientId") UUID clientId);
 
     @NotNull
     Optional<Card> findByNumber(@NotNull Long number);
+
+    @NotNull
+    Optional<Card> findById(@NotNull UUID id);
 }

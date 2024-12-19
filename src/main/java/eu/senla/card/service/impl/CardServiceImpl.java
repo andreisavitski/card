@@ -17,11 +17,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static eu.senla.card.constant.AppConstants.ZERO;
 import static eu.senla.card.util.ResponseMessageUtil.badRequest;
 import static eu.senla.card.util.ResponseMessageUtil.ok;
 import static eu.senla.card.util.SecureRandom16DigitNumber.generateRandomNumber;
+import static java.util.UUID.randomUUID;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +35,7 @@ public class CardServiceImpl implements CardService {
 
     @NotNull
     @Override
-    public ResponseMessageDto findCardByClientId(@NotNull Long clientId) {
+    public ResponseMessageDto findCardByClientId(@NotNull UUID clientId) {
         final List<CardDto> cards = cardRepository.findByClientId(clientId).stream()
                 .map(cardMapper::toDto)
                 .toList();
@@ -75,11 +77,10 @@ public class CardServiceImpl implements CardService {
 
     @NotNull
     @Override
-    public ResponseMessageDto addCard(@NotNull Long clientId) {
-        final Client client = Client.builder()
-                .id(clientId)
-                .build();
+    public ResponseMessageDto addCard(@NotNull UUID clientId) {
+        final Client client = new Client();
         final Card card = Card.builder()
+                .id(randomUUID())
                 .client(client)
                 .amount(new BigDecimal(ZERO))
                 .build();
