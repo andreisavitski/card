@@ -1,0 +1,47 @@
+databaseChangeLog:
+  - changeSet:
+      id: v.1.0-4-insert-deposit-type
+      author: andrei_savitski
+      changes:
+        - insert:
+            tableName: deposit_type
+            columns:
+              - column:
+                  name: id
+                  value: 4dd62599-8394-4d68-a25e-e05a60746866
+              - column:
+                  name: name
+                  value: happy
+              - column:
+                  name: min_amount
+                  value: 50
+              - column:
+                  name: max_amount
+                  value: 10000
+              - column:
+                  name: percent
+                  value: 15
+              - column:
+                  name: period_in_months
+                  value: 18
+        - insert:
+            tableName: deposit_type
+            columns:
+              - column:
+                  name: id
+                  value: fe54e998-cd59-4743-a531-8950bea6b4ff
+              - column:
+                  name: name
+                  value: be happy
+              - column:
+                  name: min_amount
+                  value: 100
+              - column:
+                  name: max_amount
+                  value: 100000
+              - column:
+                  name: percent
+                  value: 17
+              - column:
+                  name: period_in_months
+                  value: 36

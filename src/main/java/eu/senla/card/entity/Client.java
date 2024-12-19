@@ -9,9 +9,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.UUID;
 
-import static jakarta.persistence.CascadeType.REMOVE;
-import static jakarta.persistence.FetchType.EAGER;
+import static jakarta.persistence.CascadeType.MERGE;
 
 @Getter
 @Setter
@@ -21,11 +21,11 @@ public class Client {
 
     @Id
     @Column(name = "id")
-    private Long id;
+    private UUID id;
 
     @Column(name = "login")
     private String login;
 
-    @OneToMany(mappedBy = "client", cascade = REMOVE, fetch = EAGER)
+    @OneToMany(mappedBy = "client", cascade = MERGE)
     private List<Card> cards;
 }

@@ -5,15 +5,16 @@ import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Data
 @Builder
 @Jacksonized
 public class PaymentRequestMessageDto {
 
-    private final Long writeOffCardId;
+    private final UUID writeOffCardId;
 
-    private final Long clientId;
+    private final UUID clientId;
 
     private final BigDecimal amount;
 }

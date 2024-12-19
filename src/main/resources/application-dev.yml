@@ -14,11 +14,11 @@ spring:
     format-sql: true
     hibernate:
       ddl-auto: validate
-    open-in-view: false
-    show-sql: false
+    open-in-view: true
+    show-sql: true
     properties:
       hibernate:
-        format_sql: false
+        format_sql: true
 
   liquibase:
     enabled: true
@@ -42,6 +42,10 @@ rabbitmq:
     name: request_get_card
   queue_response_for_get_card:
     name: response_get_card
+  queue_request_for_add_card:
+    name: request_add_card
+  queue_response_for_add_card:
+    name: response_add_card
   queue_request_for_transfer:
     name: request_transfer
   queue_response_for_transfer:
@@ -50,9 +54,29 @@ rabbitmq:
     name: request_payment
   queue_response_for_payment:
     name: response_payment
+  queue_request_for_open_deposit:
+    name: request_open_deposit
+  queue_response_for_open_deposit:
+    name: response_open_deposit
+  queue_request_for_update_deposit:
+    name: request_update_deposit
+  queue_response_for_update_deposit:
+    name: response_update_deposit
   routing_for_response_get_card:
     key: response_get_card
+  routing_for_response_add_card:
+    key: response_add_card
   routing_for_response_transfer:
     key: response_transfer
   routing_for_response_payment:
     key: response_payment
+  routing_for_response_open_deposit:
+    key: response_open_deposit
+  routing_for_response_update_deposit:
+    key: response_update_deposit
+
+logging:
+  level:
+    org:
+      hibernate:
+        sql: DEBUG

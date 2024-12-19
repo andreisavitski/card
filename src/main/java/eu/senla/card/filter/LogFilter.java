@@ -1,4 +1,4 @@
-package eu.senla.card.log;
+package eu.senla.card.filter;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

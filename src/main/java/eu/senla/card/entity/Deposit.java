@@ -12,27 +12,37 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.UUID;
+
+import static jakarta.persistence.CascadeType.MERGE;
 
 @Getter
 @Setter
 @Builder
 @Entity
-@Table(name = "card")
-@AllArgsConstructor
+@Table(name = "deposit")
 @NoArgsConstructor
-public class Card {
+@AllArgsConstructor
+public class Deposit {
 
     @Id
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "number", nullable = false, unique = true)
-    private Long number;
+    @ManyToOne
+    @JoinColumn(name = "deposit_type_id", nullable = false)
+    private DepositType depositType;
 
-    @Column(name = "amount")
-    private BigDecimal amount;
+    @Column(name = "deposit_opening_date", nullable = false)
+    private LocalDateTime depositOpeningDate;
+
+    @Column(name = "deposit_closing_date")
+    private LocalDateTime depositClosingDate;
+
+    @ManyToOne(cascade = MERGE)
+    @JoinColumn(name = "card_id", unique = true, nullable = false)
+    private Card card;
 
     @ManyToOne
     @JoinColumn(name = "client_id")

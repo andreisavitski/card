@@ -3,3 +3,9 @@ databaseChangeLog:
       file: db/changelog/changeset/v.1.0/v.1.0-15-10-2024-create-card-table-changelog.yaml
   - include:
       file: db/changelog/changeset/v.1.0/v.1.0-14-10-2024-insert-card-changelog.yaml
+  - include:
+      file: db/changelog/changeset/v.1.0/v.1.0-09-12-2024-create-deposit-type-table-changelog.yaml
+  - include:
+      file: db/changelog/changeset/v.1.0/v.1.0-09-12-2024-insert-deposit-type-changelog.yaml
+  - include:
+      file: db/changelog/changeset/v.1.0/v.1.0-09-12-2024-create-deposit-table-changelog.yaml

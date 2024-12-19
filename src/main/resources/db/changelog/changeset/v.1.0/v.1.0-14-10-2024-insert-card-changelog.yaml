@@ -8,7 +8,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  value: 777
+                  value: da59a78a-2925-44b8-bea2-0ee919a85d41
               - column:
                   name: number
                   value: 555445435345353543
@@ -17,13 +17,13 @@ databaseChangeLog:
                   value: 1000
               - column:
                   name: client_id
-                  value: 666
+                  value: 93e0abd9-2478-415b-888a-315f0d58830a
         - insert:
             tableName: card
             columns:
               - column:
                   name: id
-                  value: 888
+                  value: 556668ff-f8ee-45ec-a523-cdc7a6d15d6e
               - column:
                   name: number
                   value: 3454354353454343
@@ -32,13 +32,13 @@ databaseChangeLog:
                   value: 500
               - column:
                   name: client_id
-                  value: 666
+                  value: 93e0abd9-2478-415b-888a-315f0d58830a
         - insert:
             tableName: card
             columns:
               - column:
                   name: id
-                  value: 999
+                  value: 20486fed-1f6a-4b2b-8a60-12a4721ef610
               - column:
                   name: number
                   value: 3454353534534534
@@ -47,4 +47,4 @@ databaseChangeLog:
                   value: 1500
               - column:
                   name: client_id
-                  value: 666
+                  value: 93e0abd9-2478-415b-888a-315f0d58830a

@@ -10,13 +10,9 @@ import java.util.UUID;
 @Data
 @Builder
 @Jacksonized
-public class TransferRequestMessageDto {
+public class DepositUpdaterDto {
 
-    private final UUID writeOffCardId;
+    private final UUID depositId;
 
-    private final UUID targetCardId;
-
-    private final UUID clientId;
-
-    private final BigDecimal amount;
+    private final BigDecimal contributionAmount;
 }

@@ -8,11 +8,9 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: bigint
-                  autoIncrement: true
+                  type: uuid
                   constraints:
                     primaryKey: true
-                    nullable: false
               - column:
                   name: number
                   type: bigint
@@ -24,7 +22,7 @@ databaseChangeLog:
                   type: numeric(38,2)
               - column:
                   name: client_id
-                  type: bigint
+                  type: uuid
         - addForeignKeyConstraint:
             baseColumnNames: client_id
             baseTableName: card
